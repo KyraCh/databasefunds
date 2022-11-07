@@ -1,18 +1,26 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-
+<?php include("connection.php")?>
 <?php
   // Get info from the URL:
   $item_id = $_GET['item_id'];
-
   // TODO: Use item_id to make a query to the database.
 
   // DELETEME: For now, using placeholder data.
-  $title = "Placeholder title";
-  $description = "Description blah blah blah";
-  $current_price = 30.50;
-  $num_bids = 1;
-  $end_time = new DateTime('2020-11-02T00:00:00');
+  $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
+  $result = mysqli_query($con, $sql);
+  $check = mysqli_num_rows($result);
+
+  if ($check > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $title = $row["title"];
+          $description = $row["details"];
+          $num_bids = 1;
+          $current_price = $row["reservePrice"];
+          $end_time = new DateTime($row["endDate"]);
+
+      }
+  }
 
   // TODO: Note: Auctions that have ended may pull a different set of data,
   //       like whether the auction ended in a sale or was cancelled due
@@ -82,9 +90,9 @@
         <div class="input-group-prepend">
           <span class="input-group-text">£</span>
         </div>
-	    <input type="number" class="form-control" id="bid">
+	    <input type="number" name = "my_bid" class="form-control" id="bid">
       </div>
-      <button type="submit" class="btn btn-primary form-control">Place bid</button>
+      <button type="submit" name = "submit" class="btn btn-primary form-control">Place bid</button>
     </form>
 <?php endif ?>
 
