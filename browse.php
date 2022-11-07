@@ -86,7 +86,7 @@
   else {
           $keyword = $_GET['keyword'];
 //          $search = mysqli_escape_string($con,$keyword );
-          $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword' OR details LIKE '%$keyword%'";
+          $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%'";
           $result = mysqli_query($con,$sql);
           $queryOutput = mysqli_num_rows($result);
 
