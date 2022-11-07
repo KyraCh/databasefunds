@@ -1,7 +1,11 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
+<<<<<<< HEAD
 
+=======
+// hello my name is kyra
+>>>>>>> my_work
 <div class="container">
 
 <h2 class="my-3">Browse listings</h2>
