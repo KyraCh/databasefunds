@@ -20,7 +20,7 @@
               <i class="fa fa-search"></i>
             </span>
           </div>
-          <input type="text" class="form-control border-left-0" id="keyword" placeholder="Search for anything">
+          <input type="text" class="form-control border-left-0" id="keyword" name = "keyword" placeholder="Search for anything">
         </div>
       </div>
     </div>
@@ -29,9 +29,15 @@
         <label for="cat" class="sr-only">Search within:</label>
         <select class="form-control" id="cat">
           <option selected value="all">All categories</option>
-          <option value="fill">Fill me in</option>
-          <option value="with">with options</option>
-          <option value="populated">populated from a database?</option>
+          <option value="fashion">Fashion</option>
+          <option value="healthBeauty">Health & Beauty</option>
+          <option value="electronics">Electronics</option>
+            <option value="homeGarden">Home & Garden</option>
+            <option value="hobbiesLeisure">Hobbies & Leisure</option>
+            <option value="media">Media</option>
+            <option value="art">Art</option>
+            <option value="sports">Sports</option>
+            <option value="others">Others</option>
         </select>
       </div>
     </div>
@@ -39,14 +45,15 @@
       <div class="form-inline">
         <label class="mx-2" for="order_by">Sort by:</label>
         <select class="form-control" id="order_by">
-          <option selected value="pricelow">Price (low to high)</option>
+          <option selected value="noOrder">No order</option>
+          <option value="pricelow">Price (low to high)</option>
           <option value="pricehigh">Price (high to low)</option>
           <option value="date">Soonest expiry</option>
         </select>
       </div>
     </div>
     <div class="col-md-1 px-0">
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" name = "searchButton" class="btn btn-primary">Search</button>
     </div>
   </div>
 </form>
@@ -59,9 +66,43 @@
   // Retrieve these from the URL
   if (!isset($_GET['keyword'])) {
     // TODO: Define behavior if a keyword has not been specified.
-  }
+      $sql = "SELECT * FROM auction1";
+      $result = $con->query($sql);
+
+      if ($result->num_rows > 0) {
+          // output data of each row
+          while ($row = $result->fetch_assoc()) {
+              $item_id = $row["auctionId"];
+              $title = $row["title"];
+              $description = $row["details"];
+              $current_price = $row["startingPrice"];
+              $num_bids = 1;
+              $end_date = new DateTime('2020-12-04T18:00:00');
+              print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+          }
+      } else {
+          echo "Results not found";
+      }$con->close();}
   else {
-    $keyword = $_GET['keyword'];
+          $keyword = $_GET['keyword'];
+//          $search = mysqli_escape_string($con,$keyword );
+          $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword' OR details LIKE '%$keyword%'";
+          $result = mysqli_query($con,$sql);
+          $queryOutput = mysqli_num_rows($result);
+
+          if ($result->num_rows > 0) {
+              // output data of each row
+              while ($row = $result->fetch_assoc()) {
+                  $item_id = $row["auctionId"];
+                  $title = $row["title"];
+                  $description = $row["details"];
+                  $current_price = $row["startingPrice"];
+                  $num_bids = 1;
+                  $end_date = new DateTime('2020-12-04T18:00:00');
+                  print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+              }
+          } else {
+              echo "Results not found";}
   }
 
   if (!isset($_GET['cat'])) {
