@@ -2,10 +2,14 @@
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 // hello my name is kyra
 >>>>>>> my_work
+=======
+
+>>>>>>> a439fdda216d760e071491724dda964377d45f2f
 <div class="container">
 
 <h2 class="my-3">Browse listings</h2>
