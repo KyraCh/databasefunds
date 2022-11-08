@@ -78,7 +78,7 @@
               $description = $row["details"];
               $current_price = $row["startingPrice"];
               $num_bids = $row['num_bids'];
-              $end_date = new DateTime('2020-12-04T18:00:00');
+              $end_date = new DateTime($row["endDate"]);
               print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
           }
       } else {
@@ -98,8 +98,8 @@
                   $title = $row["title"];
                   $description = $row["details"];
                   $current_price = $row["startingPrice"];
-                  $num_bids = 1;
-                  $end_date = new DateTime('2020-12-04T18:00:00');
+                  $num_bids = $row['num_bids'];
+                  $end_date = new DateTime($row["endDate"]);
                   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
               }
           } else {

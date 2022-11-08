@@ -2,6 +2,7 @@
 $item_id = $_GET['item_id'];
 $bid = $_GET['my_bid'];
 $timestamp = time();
+echo $timestamp;
 $sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
 $result = mysqli_query($con, $sql);
 $check = mysqli_num_rows($result);
@@ -16,15 +17,15 @@ if ($bid > $current_price) {
     $sql1 = "UPDATE auction1 SET reservePrice = " . $bid . ", num_bids = num_bids + 1 WHERE auctionId = $item_id;";
     $result1 = mysqli_query($con, $sql1);
 
-    $sql2 = "SELECT * FROM `bid` WHERE auctionId = $item_id AND email = 'cakeandfade@hotmail.co';";
+    $sql2 = "SELECT * FROM bid WHERE auctionId = ' .$item_id. ' AND email = 'cakeandfade@hotmail.co';";
     $result2 = mysqli_query($con, $sql2);
     $check2 = mysqli_num_rows($result2);
 
-    if ($check > 0){
-        $sql3 = "UPDATE bid SET price = " . $bid . " WHERE auctionId = $item_id AND email = 'cakeandfade@hotmail.co';";
+    if ($check2 > 0){
+        $sql3 = "UPDATE bid SET price = " . $bid . " WHERE auctionId = '. $item_id .' AND email = 'cakeandfade@hotmail.co';";
         $result3 = mysqli_query($con, $sql3);
     }
-    else if ($check == 0) {
+    else if ($check2 == 0) {
         $sql3 = "INSERT INTO bid VALUES ($item_id, 'cakeandfade@hotmail.co', $bid, $timestamp);";
         $result3 = mysqli_query($con, $sql3);
     };
