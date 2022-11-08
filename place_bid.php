@@ -1,8 +1,6 @@
 <?php include('connection.php');
 $item_id = $_GET['item_id'];
 $bid = $_GET['my_bid'];
-$timestamp = time();
-echo $timestamp;
 $sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
 $result = mysqli_query($con, $sql);
 $check = mysqli_num_rows($result);
@@ -21,15 +19,23 @@ if ($bid > $current_price) {
     $result2 = mysqli_query($con, $sql2);
     $check2 = mysqli_num_rows($result2);
 
-    if ($check2 > 0){
-        $sql3 = "UPDATE bid SET price = " . $bid . " WHERE auctionId = '. $item_id .' AND email = 'cakeandfade@hotmail.co';";
+    if ($check2 > 0) {
+        $sql3 = "UPDATE bid SET price = $bid WHERE auctionId = $item_id AND email = 'cakeandfade@hotmail.co';";
         $result3 = mysqli_query($con, $sql3);
     }
-    else if ($check2 == 0) {
-        $sql3 = "INSERT INTO bid VALUES ($item_id, 'cakeandfade@hotmail.co', $bid, $timestamp);";
-        $result3 = mysqli_query($con, $sql3);
-    };
-    echo "Bid successful!";
+    else {
+        $sql4 = "INSERT INTO bid VALUES ($item_id, 'cakeandfade@hotmail.co', $bid, now());";
+        $result4 = mysqli_query($con, $sql4);
+    }
+    $sql5 = "SELECT title FROM auction1 WHERE auctionId = $item_id;";
+    $result5 = mysqli_query($con, $sql5);
+    $check5 = mysqli_num_rows($result5);
+    if ($check5>0) {
+        while ($row = mysqli_fetch_assoc($result5)) {
+            $title = $row['title'];
+        }
+    }
+    echo "Bid successful! $title has been added to My Listings.";
     header("refresh:3; mylistings.php");
 
 }
