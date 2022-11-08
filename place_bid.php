@@ -1,4 +1,7 @@
 <?php include('connection.php');
+include_once("header.php");
+require("utilities.php") ;
+$email = $_SESSION['email'];
 $item_id = $_GET['item_id'];
 $bid = $_GET['my_bid'];
 $sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
@@ -12,19 +15,19 @@ if ($check>0) {
 }
 
 if ($bid > $current_price) {
-    $sql1 = "UPDATE auction1 SET reservePrice = " . $bid . ", num_bids = num_bids + 1 WHERE auctionId = $item_id;";
+    $sql1 = "UPDATE auction1 SET reservePrice = $bid, num_bids = num_bids + 1 WHERE auctionId = $item_id;";
     $result1 = mysqli_query($con, $sql1);
 
-    $sql2 = "SELECT * FROM bid WHERE auctionId = ' .$item_id. ' AND email = 'cakeandfade@hotmail.co';";
+    $sql2 = "SELECT * FROM bid WHERE auctionId = $item_id AND email = '$email';";
     $result2 = mysqli_query($con, $sql2);
     $check2 = mysqli_num_rows($result2);
 
     if ($check2 > 0) {
-        $sql3 = "UPDATE bid SET price = $bid WHERE auctionId = $item_id AND email = 'cakeandfade@hotmail.co';";
+        $sql3 = "UPDATE bid SET price = $bid WHERE auctionId = $item_id AND email = '$email';";
         $result3 = mysqli_query($con, $sql3);
     }
     else {
-        $sql4 = "INSERT INTO bid VALUES ($item_id, 'cakeandfade@hotmail.co', $bid, now());";
+        $sql4 = "INSERT INTO bid VALUES ($item_id, '$email', $bid, now());";
         $result4 = mysqli_query($con, $sql4);
     }
     $sql5 = "SELECT title FROM auction1 WHERE auctionId = $item_id;";
@@ -36,7 +39,7 @@ if ($bid > $current_price) {
         }
     }
     echo "Bid successful! $title has been added to My Listings.";
-    header("refresh:3; mylistings.php");
+    #header("refresh:3; mylistings.php");
 
 }
 else {

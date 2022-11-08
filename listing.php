@@ -6,6 +6,7 @@
 $item_id = $_GET['item_id'];
 // TODO: Use item_id to make a query to the database.
 
+
 // DELETEME: For now, using placeholder data.
 $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
 $result = mysqli_query($con, $sql);
