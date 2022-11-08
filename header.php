@@ -3,6 +3,7 @@
 // But eventually, with a database, these should be set automatically
 // ONLY after the user's login credentials have been verified via a
 // database query.
+#comment
 session_start();
 //*added this if statement here to change the session to the user's session after login, this allows for each login to belong to one user
 if(isset($_POST['submit']))
