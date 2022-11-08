@@ -16,8 +16,12 @@ if ($check > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $title = $row["title"];
         $description = $row["details"];
-        $num_bids = 1;
-        $current_price = $row["reservePrice"];
+        $num_bids = $row['num_bids'];
+        if ($num_bids == 0) {
+            $current_price = $row["startingPrice"];
+        } else {
+            $current_price = $row["reservePrice"];
+        }
         $end_time = new DateTime($row["endDate"]);
 
     }
