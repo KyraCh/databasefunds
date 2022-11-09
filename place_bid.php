@@ -1,6 +1,7 @@
 <?php include('connection.php');
 include_once("header.php");
 require("utilities.php") ;
+
 $email = $_SESSION['email'];
 $item_id = $_GET['item_id'];
 $bid = $_GET['my_bid'];
@@ -26,7 +27,7 @@ if ($bid > $current_price) {
         $sql3 = "UPDATE bid SET price = $bid WHERE auctionId = $item_id AND email = '$email';";
         $result3 = mysqli_query($con, $sql3);
         echo "Bid successful!";
-        header("refresh:3; mylistings.php");
+        header("refresh:3; mybids.php");
     }
     else {
         $sql4 = "INSERT INTO bid VALUES ($item_id, '$email', $bid, now());";
@@ -39,8 +40,8 @@ if ($bid > $current_price) {
                 $title = $row['title'];
             }
         }
-        echo "Bid successful! $title has been added to My Listings.";
-        header("refresh:3; mylistings.php");
+        echo "Bid successful! $title has been added to My Bids.";
+        header("refresh:3; mybids.php");
     }
 
 

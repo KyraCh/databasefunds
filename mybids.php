@@ -1,10 +1,11 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php");?>
 <?php include ("connection.php");?>
+<?php require('utilities_my_bids.php');?>
 
     <div class="container">
 
-    <h2 class="my-3">My listings</h2>
+    <h2 class="my-3">My bids</h2>
 
 <?php
 
@@ -26,7 +27,8 @@ if ($check > 0) {
             $current_price = $row["reservePrice"];
         }
         $end_date = new DateTime($row["endDate"]);
-        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+        $my_bid = $row['price'];
+        print_bids_li($item_id, $title, $my_bid, $description, $current_price, $num_bids, $end_date);
     }
 }
 
