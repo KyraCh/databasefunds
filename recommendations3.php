@@ -1,7 +1,9 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
-
+<?php // this version takes each item that the user bid on, finds other users who bid on that item
+//then finds other items they bid on
+//and recommends them provided that they are active bids and have not been previously bid on by the user logged in?>
     <div class="container">
 
 <!--        <h2 class="my-3">Recommendations for you:</h2>-->
