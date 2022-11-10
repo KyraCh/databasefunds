@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b0b79fb-b9d7-423c-a671-0669462f9389" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/utilities_my_bids.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mybids.php" beforeDir="false" afterPath="$PROJECT_DIR$/mybids.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/place_bid.php" beforeDir="false" afterPath="$PROJECT_DIR$/place_bid.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recommendations.php" beforeDir="false" afterPath="$PROJECT_DIR$/recommendations.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,15 +24,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Applications/XAMPP/xamppfiles/htdocs/databasefunds&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Applications/XAMPP/xamppfiles/htdocs/databasefunds",
+    "settings.editor.selected.configurable": "SQL Dialects",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -46,7 +45,8 @@
       <workItem from="1667838700611" duration="95000" />
       <workItem from="1667916407459" duration="297000" />
       <workItem from="1667917303133" duration="498000" />
-      <workItem from="1667940817804" duration="6852000" />
+      <workItem from="1667940817804" duration="7269000" />
+      <workItem from="1668028155272" duration="2774000" />
     </task>
     <servers />
   </component>
@@ -63,5 +63,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
