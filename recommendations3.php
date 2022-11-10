@@ -8,7 +8,7 @@
 <?php
 $email = $_SESSION['email'];
 $now = new DateTime();
-
+//first sql query finds the title and name of items that the users has bid on and orders them by when the bid was placed
 $sql = "SELECT * FROM auction1 as a JOIN (SELECT auctionId, date FROM bid WHERE email='$email') as b ON a.auctionId = b.auctionId ORDER BY b.date DESC;";
 $result = mysqli_query($con, $sql);
 $check = mysqli_num_rows($result);
@@ -19,7 +19,7 @@ if ($check > 0) {
         <?php
         $sql2 = "SELECT * FROM auction1 where auctionId in
                 (SELECT DISTINCT auctionId from bid where email in 
-                (SELECT email FROM `bid` WHERE auctionId = $item_id) and email != '$email' and auctionId != $item_id);";
+                (SELECT email FROM `bid` WHERE auctionId = $item_id and email != '$email') and auctionId not in (SELECT auctionId FROM bid where email = '$email'));";
         $result2 = mysqli_query($con, $sql2);
         $check2 = mysqli_num_rows($result2);
         if ($check2>0) {
@@ -29,6 +29,7 @@ if ($check > 0) {
                 $title2 = $row["title"];
                 $description = $row["details"];
                 $num_bids = $row["num_bids"];
+                $e_mail = $row['email'];
                 if ($num_bids==0){
                     $current_price = $row["startingPrice"];
                 }
