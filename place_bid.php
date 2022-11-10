@@ -24,7 +24,7 @@ if ($bid > $current_price) {
     $check2 = mysqli_num_rows($result2);
 
     if ($check2 > 0) {
-        $sql3 = "UPDATE bid SET price = $bid WHERE auctionId = $item_id AND email = '$email';";
+        $sql3 = "UPDATE bid SET price = $bid, date = now() WHERE auctionId = $item_id AND email = '$email';";
         $result3 = mysqli_query($con, $sql3);
         echo "Bid successful!";
         header("refresh:3; mybids.php");
