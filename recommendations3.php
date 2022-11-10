@@ -15,10 +15,11 @@ $check = mysqli_num_rows($result);
 if ($check > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $title = $row['title'];
-        $item_id = $row['auctionId'];
+        $item_id = $row['auctionId'];?>
+        <?php
         $sql2 = "SELECT * FROM auction1 where auctionId in
                 (SELECT DISTINCT auctionId from bid where email in 
-                (SELECT email FROM `bid` WHERE auctionId = $item_id) and auctionId != $item_id);";
+                (SELECT email FROM `bid` WHERE auctionId = $item_id) and email != '$email' and auctionId != $item_id);";
         $result2 = mysqli_query($con, $sql2);
         $check2 = mysqli_num_rows($result2);
         if ($check2>0) {
