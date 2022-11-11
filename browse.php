@@ -126,52 +126,11 @@ $max_page = ceil($num_results / $results_per_page);
 
 <div class="container mt-5">
 
-<<<<<<< HEAD
-<!-- TODO: If result set is empty, print an informative message. Otherwise... -->
-
-<ul class="list-group">
-
-<!-- TODO: Use a while loop to print a list item for each auction listing
-     retrieved from the query -->
-
-<?php
-//
-//            $sql = "SELECT * FROM  auction1;";
-//            $result = mysqli_query($con, $sql);
-//            $check = mysqli_num_rows($result);
-//
-//            if ($check > 0) {
-//                while ($row = mysqli_fetch_assoc($result)) {
-//                    $item_id = $row['auctionId'];
-//                    $title = $row["title"];
-//                    $description = $row["details"];
-//                    $current_price = $row["reservePrice"];
-//                    $num_bids = 1;
-//                    $end_date = $row["endDate"];
-//                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
-//                }
-//            };
-//            ?>
-</ul>
-
-<!-- Pagination for results listings -->
-<nav aria-label="Search results pages" class="mt-5">
-  <ul class="pagination justify-content-center">
-  
-<?php
-
-  // Copy any currently-set GET variables to the URL.
-  $querystring = "";
-  foreach ($_GET as $key => $value) {
-    if ($key != "page") {
-      $querystring .= "$key=$value&amp;";
-=======
     <!-- TODO: If result set is empty, print an informative message. Otherwise... -->
     <?php
     if ($result->num_rows == 0) {
         // output data of each row
         print 'No results found';
->>>>>>> my_work
     }
     ?>
     <ul class="list-group">
@@ -192,7 +151,7 @@ $max_page = ceil($num_results / $results_per_page);
                 print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
             }
         }
-            ?>
+        ?>
     </ul>
 
     <!-- Pagination for results listings -->
