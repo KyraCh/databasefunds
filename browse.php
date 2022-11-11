@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="col-md-1 px-0">
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="submit" class="btn btn-primary" name = 'search'>Search</button>
                 </div>
             </div>
         </form>
@@ -66,12 +66,37 @@
 <?php
 
 
+// define behaviour when browse.php is empty and when its not
+if (!isset($_GET['keyword'])){
+     $keyword = '';
+}
+else{
+    $keyword = $_GET['keyword'];
+}
+if (!isset($_GET['cat'])){
+     $category = 'all';
+}
+else{
+    $category = $_GET['cat'];
+}
+if (!isset($_GET['order_by'])){
+     $ordering = 'noOrder';
+}
+else{
+    $ordering = $_GET['order_by'];
+}
+if (!isset($_GET['page'])) {
+    $curr_page = 1;
+}
+else {
+    $curr_page = $_GET['page'];
+}
 
-$keyword = $_GET['keyword'];
-$category = $_GET['cat'];
-$ordering = $_GET['order_by'];
 
-
+// make queries
+/* TODO: Use above values to construct a query. Use this query to
+   retrieve data from the database. (If there is no form data entered,
+   decide on appropriate default value/default query to make. */
 if ($category != 'all'){
     $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%'";
 
@@ -82,10 +107,10 @@ if ($category != 'all'){
     if ($ordering == 'else'){
         $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";}
     $result = mysqli_query($con,$sql);
-    $queryOutput = mysqli_num_rows($result);
+
 }
 
-elseif ($category === 'all') {
+elseif ($category == 'all') {
     $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%'";
     if ($ordering == 'pricelow'){
         $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice ASC";}
@@ -95,17 +120,11 @@ elseif ($category === 'all') {
         $sql = "SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";
     }
     $result = mysqli_query($con,$sql);
-    $queryOutput = mysqli_num_rows($result);
 
 }
 
 
-if (!isset($_GET['page'])) {
-    $curr_page = 1;
-}
-else {
-    $curr_page = $_GET['page'];
-}
+
 
 /* TODO: Use above values to construct a query. Use this query to
    retrieve data from the database. (If there is no form data entered,
