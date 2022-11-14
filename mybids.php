@@ -28,9 +28,14 @@ if ($check > 0) {
         }
         $end_date = new DateTime($row["endDate"]);
         $my_bid = $row['price'];
-        print_bids_li($item_id, $title, $my_bid, $description, $current_price, $num_bids, $end_date);
+        if ($my_bid < $current_price) {
+            print_bids_li_red($item_id, $title, $my_bid, $description, $current_price, $num_bids, $end_date);
+        } else {
+            print_bids_li($item_id, $title, $my_bid, $description, $current_price, $num_bids, $end_date);
+        }
     }
-}
+    }?>
+
 
 
 
@@ -47,6 +52,6 @@ if ($check > 0) {
 
 // TODO: Loop through results and print them out as list items.
 
-?>
+
 
 <?php include_once("footer.php")?>
