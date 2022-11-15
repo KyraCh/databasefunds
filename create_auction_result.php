@@ -31,7 +31,7 @@ if($_SESSION['logged_in'] == true) {
                 //checking that the start price is not 0 as it won't make sense.
                 if ($startPrice!=0) {
                     //checking that reserve price is an integer or is left empty.
-                    if (is_int($reservePrice) or $reservePrice=='') {
+                    if (is_int($reservePrice) or $reservePrice=='' or $reservePrice > $startPrice) {
                         //checking that end date&time entered by the user is later than the current date&time.
                         if ($endDate > $dateNow) {
                             //auto incrementing the auctionID by 1, if it is the first entry then auctionID is set to 1.
@@ -62,7 +62,7 @@ if($_SESSION['logged_in'] == true) {
                             echo "End Date should be in a valid date form";
                         }
                     } else {
-                        echo "Reserve Price should be a entered as a number or decimal.";
+                        echo "Reserve Price should be a entered as a number or decimal and definitely bigger than starting price.";
                     }
                 } else {
                     echo "Starting Price should not be equal to 0.";
