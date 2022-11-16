@@ -25,7 +25,7 @@ if($_SESSION['logged_in'] == true) {
             $reservePrice = $_POST['reservePrice'];
             $endDate = $_POST['endDate'];
             $sec = strtotime($endDate);
-            $endDate = date ("Y-d-m H:i", $sec);
+            $end_Date = date ("Y-m-d h:i", $sec);
             //checking that the required fields are not empty.
             if (!empty($auctionTitle) && !empty($auctionDetails) && !empty($category) && !empty($startPrice) && !empty($endDate)) {
                 //checking that the start price is not 0 as it won't make sense.
@@ -33,7 +33,7 @@ if($_SESSION['logged_in'] == true) {
                     //checking that reserve price is an integer or is left empty.
                     if (is_int($reservePrice) or $reservePrice=='' or $reservePrice > $startPrice) {
                         //checking that end date&time entered by the user is later than the current date&time.
-                        if ($endDate > $dateNow) {
+                        if ($end_Date > $dateNow) {
                             //auto incrementing the auctionID by 1, if it is the first entry then auctionID is set to 1.
                             $query=("select * from auction1 order by auctionId desc limit 1");
                             $result=mysqli_query($con,$query);
@@ -46,7 +46,7 @@ if($_SESSION['logged_in'] == true) {
                                 $auctionID= $greaterAuctionId + 1;
                             }
                             //inserting form data in the database.
-                            $sql =("INSERT INTO auction1 (auctionID,email, title, details, category, startingPrice, reservePrice, endDate) VALUES ('$auctionID','$email', '$auctionTitle','$auctionDetails','$category','$startPrice','$reservePrice','$endDate')");
+                            $sql =("INSERT INTO auction1 (auctionID,email, title, details, category, startingPrice, reservePrice, endDate) VALUES ('$auctionID','$email', '$auctionTitle','$auctionDetails','$category','$startPrice','$reservePrice','$end_Date')");
                             $result = $con->query($sql);
                             //informing user that auction was created successfully if all okay.
                             if ($result){
@@ -55,8 +55,8 @@ if($_SESSION['logged_in'] == true) {
                             else {
                                 echo "Form not submitted";
                             }
-                        //useful error messages to the use depending on what is wrong when compeleting the form.
-                        } elseif ($endDate <= $dateNow) {
+                        //useful error messages to the use depending on what is wrong when completing the form.
+                        } elseif ($end_Date <= $dateNow) {
                             echo "End Date should be anytime later than today";
                         } else {
                             echo "End Date should be in a valid date form";
