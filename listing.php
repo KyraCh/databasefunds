@@ -1,34 +1,40 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
-<?php include("connection.php")?>
-<?php
-// Get info from the URL:
+<?php include("connection.php");
+//get current user's email
+$email = $_SESSION["email"];
+//get item id from the URL
 $item_id = $_GET['item_id'];
-// TODO: Use item_id to make a query to the database.
-
-// DELETEME: For now, using placeholder data.
+//retrieve information about the item from the database
 $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
 $result = mysqli_query($con, $sql);
 $check = mysqli_num_rows($result);
-
 if ($check > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $title = $row["title"];
         $description = $row["details"];
-        $num_bids = 1;
-        $current_price = $row["reservePrice"];
+        $num_bids = $row['num_bids'];
+        if ($num_bids == 0) {
+            $current_price = $row["startingPrice"];
+        } else {
+            $current_price = $row["reservePrice"];
+        }
         $end_time = new DateTime($row["endDate"]);
+    }//end of while loop
+}//end of sql if statement
+//retrieve buy now price from the database
+$sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
+$result = mysqli_query($con, $sql);
+$check = mysqli_num_rows($result);
+if ($check > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $buyNowPrice = $row["buyNowPrice"];
+    }//end of while loop
+}//end of sql if statement
 
-    }
-}
-
-// TODO: Note: Auctions that have ended may pull a different set of data,
-//       like whether the auction ended in a sale or was cancelled due
-//       to lack of high-enough bids. Or maybe not.
-
-// Calculate time to auction end:
+//save current date and time in a variable
 $now = new DateTime();
-
+//check if auction is still active and if so, display time remaining
 if ($now < $end_time) {
     $time_to_end = date_diff($now, $end_time);
     $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
@@ -40,7 +46,6 @@ if ($now < $end_time) {
 $has_session = true;
 $watching = false;
 ?>
-
 
 <div class="container">
 
@@ -85,23 +90,45 @@ $watching = false;
             <p class="lead">Current bid: £<?php echo(number_format($current_price, 2)) ?></p>
 
             <!-- Bidding form -->
-            <form method="GET" action="place_bid.php">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">£</span>
-                    </div>
-                    <input type= "hidden" name = "item_id" id = "item_id" value = "<?php $item_id = $_GET["item_id"]; echo "$item_id"; ?>">
-                    <input type="number" name = "my_bid" class="form-control" id="bid">
-                </div>
-                <button type="submit" name = "submit" class="btn btn-primary form-control">Place bid</button>
-            </form>
-            <?php endif ?>
+            <?php //check if the current user has a buyer type account ?>
+            <?php if ($_SESSION["account_type"]=="buyer") {
+                //only display 'buy now' option if it is lower than the current highest bid
+                if ($buyNowPrice>$current_price) {
+                    ?>
+                    <form method="GET" action="place_bid.php">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">£</span>
+                            </div>
+                            <input type= "hidden" name = "item_id" id = "item_id" value = "<?php $item_id = $_GET["item_id"]; echo "$item_id"; ?>">
+                            <input type="number" name="my_bid"  class="form-control" id="bid">
+                            <button type="submit" name="PlaceBid" class="btn btn-secondary form-control">Place bid</button>
+                        </div>
+                        <button type="submit" name="BuyNow" class="btn btn-primary form-control">Buy now for £<?echo $buyNowPrice?></button>
+                    </form>
+                <?php }
+                //otherwise only give the user the option to place a higher bid
+                else {
+                    ?>
+                    <form method="GET" action="place_bid.php">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">£</span>
+                            </div>
+                            <input type= "hidden" name = "item_id" id = "item_id" value = "<?php $item_id = $_GET["item_id"]; echo "$item_id"; ?>">
+                            <input type="number" name="my_bid"  class="form-control" id="bid">
+                        </div>
+                        <button type="submit" name = "PlaceBid" class="btn btn-primary form-control">Place bid</button>
+                    </form>
+                    <?php
+                }
+            }
+            endif ?>
 
 
         </div> <!-- End of right col with bidding info -->
 
     </div> <!-- End of row #2 -->
-
 
 
     <?php include_once("footer.php")?>
