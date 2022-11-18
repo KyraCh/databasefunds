@@ -3,47 +3,60 @@
 <?php include("connection.php")?>
 <?php
 // Get info from the URL:
-$item_id = $_GET['item_id'];
+
+
+if($_SESSION['logged_in'] == 1){
+    $email = $_SESSION['email'];
+    $item_id = $_GET['item_id'];
+
 // TODO: Use item_id to make a query to the database.
 
 
-// DELETEME: For now, using placeholder data.
-$sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
-$result = mysqli_query($con, $sql);
-$check = mysqli_num_rows($result);
 
-if ($check > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $title = $row["title"];
-        $description = $row["details"];
-        $num_bids = $row['num_bids'];
-        if ($num_bids == 0) {
-            $current_price = $row["startingPrice"];
-        } else {
-            $current_price = $row["reservePrice"];
+    $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
+    $result = mysqli_query($con, $sql);
+    $check = mysqli_num_rows($result);
+
+    if ($check > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $title = $row["title"];
+            $description = $row["details"];
+            $num_bids = $row['num_bids'];
+            $image = $row['image'] ;
+            echo "<img src='images/".$image."'>";
+               if ($num_bids == 0) {
+                $current_price = $row["startingPrice"];
+            } else {
+                $current_price = $row["reservePrice"];
+            }
+            $end_time = new DateTime($row["endDate"]);
+
         }
-        $end_time = new DateTime($row["endDate"]);
-
     }
+
+    // TODO: Note: Auctions that have ended may pull a different set of data,
+    //       like whether the auction ended in a sale or was cancelled due
+    //       to lack of high-enough bids. Or maybe not.
+
+    // Calculate time to auction end:
+    $now = new DateTime();
+
+    if ($now < $end_time) {
+        $time_to_end = date_diff($now, $end_time);
+        $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
+    }
+
+    // TODO: If the user has a session, use it to make a query to the database
+    //       to determine if the user is already watching this item.
+    //       For now, this is hardcoded.
+    $has_session = true;
+    $watching = false;
+
+}else{
+    $_SESSION['logged_in'] = false;
+
+    echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
 }
-
-// TODO: Note: Auctions that have ended may pull a different set of data,
-//       like whether the auction ended in a sale or was cancelled due
-//       to lack of high-enough bids. Or maybe not.
-
-// Calculate time to auction end:
-$now = new DateTime();
-
-if ($now < $end_time) {
-    $time_to_end = date_diff($now, $end_time);
-    $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
-}
-
-// TODO: If the user has a session, use it to make a query to the database
-//       to determine if the user is already watching this item.
-//       For now, this is hardcoded.
-$has_session = true;
-$watching = false;
 ?>
 
 
@@ -51,12 +64,13 @@ $watching = false;
 
     <div class="row"> <!-- Row #1 with auction title + watch button -->
         <div class="col-sm-8"> <!-- Left col -->
-            <h2 class="my-3"><?php echo($title); ?></h2>
+            <h2 class="my-3"><?php if(isset($email)) echo($title);?></h2>
         </div>
         <div class="col-sm-4 align-self-center"> <!-- Right col -->
             <?php
             /* The following watchlist functionality uses JavaScript, but could
                just as easily use PHP as in other places in the code */
+            if (isset($email))
             if ($now < $end_time):
                 ?>
                 <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
@@ -74,7 +88,7 @@ $watching = false;
         <div class="col-sm-8"> <!-- Left col with item info -->
 
             <div class="itemDescription">
-                <?php echo($description); ?>
+                <?php if(isset($email)) echo($description); ?>
             </div>
 
         </div>
@@ -82,8 +96,8 @@ $watching = false;
         <div class="col-sm-4"> <!-- Right col with bidding info -->
 
             <p>
-                <?php if ($now > $end_time): ?>
-                    This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
+                <?php if(isset($email))  if ($now > $end_time): ?>
+                    This auction ended <?php  echo(date_format($end_time, 'j M H:i')) ?>
                     <!-- TODO: Print the result of the auction here? -->
                 <?php else: ?>
                 Auction ends <?php echo(date_format($end_time, 'j M H:i') . $time_remaining) ?></p>
