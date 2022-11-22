@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
 
         echo "<script>alert('Customer Registration done successfully..');</script>";
-        echo "<script>window.location='browse.php';</script>";
+        echo "<script>window.location='login.php';</script>";
 
         die;
     }else
