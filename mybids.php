@@ -21,8 +21,6 @@
         $title = $row["title"];
         $description = $row["details"];
         $num_bids = $row["num_bids"];
-        $image = $row['image'] ;
-        echo "<img src='images/".$image."'>";
         if ($num_bids == 0) {
             $current_price = $row["startingPrice"];
         } else {
