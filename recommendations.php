@@ -90,7 +90,7 @@ LIMIT 3;";
 //recommendations based on categories of items that user has previously bid on
 $sql_cat = "SELECT DISTINCT category FROM auction1
 INNER JOIN
-(SELECT auctionId, date FROM bid WHERE email = 'bobmu@outlook.com') AS bids
+(SELECT auctionId, date FROM bid WHERE email = '$email') AS bids
 ON auction1.auctionId = bids.auctionId
 ORDER BY bids.date
 LIMIT 3;";

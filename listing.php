@@ -1,9 +1,8 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php");
-//get current user's email
-$email = $_SESSION["email"];
-//get item id from the URL
+if($_SESSION['logged_in'] == 1){
+$email = $_SESSION['email'];
 $item_id = $_GET['item_id'];
 //retrieve information about the item from the database
 $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
@@ -14,6 +13,8 @@ if ($check > 0) {
         $title = $row["title"];
         $description = $row["details"];
         $num_bids = $row['num_bids'];
+        $image = $row['image'] ;
+        echo "<img src='images/".$image."'>";
         if ($num_bids == 0) {
             $current_price = $row["startingPrice"];
         } else {
@@ -45,8 +46,14 @@ if ($now < $end_time) {
 //       For now, this is hardcoded.
 $has_session = true;
 $watching = false;
-?>
 
+
+}else{
+$_SESSION['logged_in'] = false;
+
+echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
+}
+?>
 <div class="container">
 
     <div class="row"> <!-- Row #1 with auction title + watch button -->

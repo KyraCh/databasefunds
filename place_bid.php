@@ -44,23 +44,22 @@ if (isset($_GET["PlaceBid"])){
             echo "Bid successful!";
             header("refresh:3; mybids.php");
         }
-        else {
+    else {
             //if this is the first bid that this user placed on this item, create a row in the bid column
-            $sql4 = "INSERT INTO bid VALUES ($item_id, '$email', $bid, now());";
-            $result4 = mysqli_query($con, $sql4);
-            $sql5 = "SELECT title FROM auction1 WHERE auctionId = $item_id;";
-            $result5 = mysqli_query($con, $sql5);
-            $check5 = mysqli_num_rows($result5);
-            if ($check5>0) {
-                while ($row = mysqli_fetch_assoc($result5)) {
-                    $title = $row['title'];
-                }
+        $sql4 = "INSERT INTO bid VALUES ($item_id, '$email', $bid, now(), 'bid');";
+        $result4 = mysqli_query($con, $sql4);
+        $sql5 = "SELECT title FROM auction1 WHERE auctionId = $item_id;";
+        $result5 = mysqli_query($con, $sql5);
+        $check5 = mysqli_num_rows($result5);
+        if ($check5>0) {
+            while ($row = mysqli_fetch_assoc($result5)) {
+                $title = $row['title'];
             }
-            //let the user know that their bid was placed
-            echo "Bid successful! $title has been added to My Bids.";
-            header("refresh:3; mybids.php");
         }
-    }
+            //let the user know that their bid was placed
+        echo "Bid successful! $title has been added to My Bids.";
+        header("refresh:3; mybids.php");
+        }}
     else {
         //if the bid is lower than the current highest bid, let the user know
         echo "Bid value too low.";
