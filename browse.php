@@ -176,7 +176,8 @@ $result = mysqli_query($con,$sql);
                     $current_price = $row["startingPrice"];
                     $num_bids = 1;
                     $end_date = new DateTime($row["endDate"]);
-                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+                    $image = $row["image"];
+                    print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date,$image);
                 }
             }
             ?>
