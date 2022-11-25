@@ -2,7 +2,7 @@
 
 // print_listing_li:
 // This function prints an HTML <li> element containing an auction listing
-function print_bids_li($item_id, $title, $my_bid, $desc, $price, $num_bids, $end_time)
+function print_bids_li($item_id, $title, $my_bid, $desc, $price, $num_bids, $end_time,$image)
 {
     // Truncate long descriptions
     if (strlen($desc) > 250) {
@@ -29,15 +29,14 @@ function print_bids_li($item_id, $title, $my_bid, $desc, $price, $num_bids, $end
     }
 
     // Print HTML
-    echo('
-    <li class="list-group-item d-flex justify-content-between">
-    <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '</div>
-    <div class="text-center text-nowrap"><span style="font-size: 1.5em">Highest bid: £' . number_format($price, 2) . '</span><br/><span style="font-size: 1.0em">Your bid: £' . number_format($my_bid, 2) . '</span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
-  </li>'
-    );
+    echo('<li class="list-group-item d-flex justify-content-between">
+<img src='.$image.' />
+<div class="col-sm" ><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' .$desc_shortened.'</div>
+<div class="text-center text-nowrap"><span style="font-size: 1.5em">£' . number_format($price, 2) . '</span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
+</li>');
 }
 
-function print_bids_li_red($item_id, $title, $my_bid, $desc, $price, $num_bids, $end_time)
+function print_bids_li_red($item_id, $title, $my_bid, $desc, $price, $num_bids, $end_time,$image)
 {
     // Truncate long descriptions
     if (strlen($desc) > 250) {
@@ -64,14 +63,22 @@ function print_bids_li_red($item_id, $title, $my_bid, $desc, $price, $num_bids, 
     }
 
     // Print HTML
-    echo('
-    <li class="list-group-item d-flex justify-content-between">
-    <div class="p-2 mr-5"><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' . $desc_shortened . '</div>
-    <div class="text-center text-nowrap"><span style="font-size: 1.5em">Highest bid: £' . number_format($price, 2) . '</span><br/><span style="font-size: 1.0em"><font color=red>Your bid: £' . number_format($my_bid, 2) . '</font></span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
-  </li>'
-    );
+    echo('<li class="list-group-item d-flex justify-content-between">
+<img src='.$image.' />
+<div class="col-sm" ><h5><a href="listing.php?item_id=' . $item_id . '">' . $title . '</a></h5>' .$desc_shortened.'</div>
+<div class="text-center text-nowrap"><span style="font-size: 1.5em">£' . number_format($price, 2) . '</span><br/>' . $num_bids . $bid . '<br/>' . $time_remaining . '</div>
+</li>');
 }
+?>
 
+<style>
+    img {
+        border: 1px solid #ddd; /* Gray border */
+        border-radius: 4px;  /* Rounded border */
+        padding: 5px; /* Some padding */
+        width: 5rem; /* Set a small width */
+    }
+</style
 
 
 
