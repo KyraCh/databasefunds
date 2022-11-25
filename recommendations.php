@@ -122,11 +122,11 @@ AND b.email != '$email';";
                         $current_price = $row["reservePrice"];
                     }
                     $end_date = new DateTime($row["endDate"]);
+                    $image = $row["image"];
                     if ($end_date > $now){
-                        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
+                        print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date,$image);
                     }
                 }
             }
     }
 }
-
