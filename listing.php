@@ -73,12 +73,6 @@ if ($now < $end_time) {
 $has_session = true;
 $watching = false;
 
-
-}else{
-$_SESSION['logged_in'] = false;
-
-echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
-}
 ?>
 <div class="container">
 
@@ -235,4 +229,10 @@ echo('<div class="text-center">You have to have an account to view this item <a 
             }); // End of AJAX call
 
         } // End of addToWatchlist func
-    </script>
+    </script><?php
+
+}else{
+    $_SESSION['logged_in'] = false;
+
+    echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
+}
