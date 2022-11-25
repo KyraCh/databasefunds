@@ -1,70 +1,106 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
+
 <?php include("connection.php");
-if($_SESSION['logged_in'] == 1){
-$email = $_SESSION['email'];
-$item_id = $_GET['item_id'];
+if($_SESSION['logged_in'] == True){
+    $email = $_SESSION['email'];
+    $item_id = $_GET['item_id'];
 //retrieve information about the item from the database
-$sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
-$result = mysqli_query($con, $sql);
-$check = mysqli_num_rows($result);
-if ($check > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $title = $row["title"];
-        $description = $row["details"];
-        $num_bids = $row['num_bids'];
-        $image = $row['image'] ;
-        echo "<img src='images/".$image."'>";
-        if ($num_bids == 0) {
-            $current_price = $row["startingPrice"];
-        } else {
-            $current_price = $row["reservePrice"];
+    $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
+    $result = mysqli_query($con, $sql);
+    $check = mysqli_num_rows($result);
+    if ($check > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $title = $row["title"];
+            $description = $row["details"];
+            $num_bids = $row['num_bids'];
+            $image = $row["image"];
+
+list($width_orig, $height_orig) = getimagesize($image);
+
+if ($width_orig && $height_orig > 1000) {
+//            ?>
+    <style type="text/css">
+        img {
+            position: absolute;
+            left: 120px;
+            bottom:130px;
+            object-fit: contain;
+            width: 190px;
+            height: 210px;
+
         }
-        $end_time = new DateTime($row["endDate"]);
-    }//end of while loop
-}//end of sql if statement
+    </style>
+    <!--            --><?php
+} else {
+            ?>
+
+    <style type="text/css">
+        img {
+            position: absolute;
+            left: 120px;
+            bottom:60px;
+            object-fit: contain;
+            width: 210px;
+            height: 230px;
+        }
+    </style>
+    <?php
+} ?>
+<img src="<?php echo $image;?>" />
+            <?php
+            if ($num_bids == 0) {
+                $current_price = $row["startingPrice"];
+            } else {
+                $current_price = $row["reservePrice"];
+            }
+            $end_time = new DateTime($row["endDate"]);
+        }//end of while loop
+    }//end of sql if statement
 //retrieve buy now price from the database
-$sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
-$result = mysqli_query($con, $sql);
-$check = mysqli_num_rows($result);
-if ($check > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $buyNowPrice = $row["buyNowPrice"];
-    }//end of while loop
-}//end of sql if statement
+    $sql = "SELECT * FROM auction1 WHERE auctionId = $item_id;";
+    $result = mysqli_query($con, $sql);
+    $check = mysqli_num_rows($result);
+    if ($check > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $buyNowPrice = $row["buyNowPrice"];
+        }//end of while loop
+    }//end of sql if statement
 
 //save current date and time in a variable
-$now = new DateTime();
+    $now = new DateTime();
 //check if auction is still active and if so, display time remaining
-if ($now < $end_time) {
-    $time_to_end = date_diff($now, $end_time);
-    $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
-}
+    if ($now < $end_time) {
+        $time_to_end = date_diff($now, $end_time);
+        $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
+    }
 
 // TODO: If the user has a session, use it to make a query to the database
 //       to determine if the user is already watching this item.
 //       For now, this is hardcoded.
-$has_session = true;
-$watching = false;
+    $has_session = true;
+    $watching = false;
+
+
 
 
 }else{
-$_SESSION['logged_in'] = false;
+    $_SESSION['logged_in'] = false;
 
-echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
+    echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
 }
 ?>
 <div class="container">
 
     <div class="row"> <!-- Row #1 with auction title + watch button -->
         <div class="col-sm-8"> <!-- Left col -->
-            <h2 class="my-3"><?php echo($title); ?></h2>
+            <h2 class="my-3"><?php if($_SESSION['logged_in'] == True) echo($title); ?></h2>
         </div>
         <div class="col-sm-4 align-self-center"> <!-- Right col -->
             <?php
             /* The following watchlist functionality uses JavaScript, but could
                just as easily use PHP as in other places in the code */
-            if ($now < $end_time):
+            if($_SESSION['logged_in'] == True)  if ($now < $end_time):
                 ?>
                 <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
                     <button type="button" class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
@@ -81,7 +117,7 @@ echo('<div class="text-center">You have to have an account to view this item <a 
         <div class="col-sm-8"> <!-- Left col with item info -->
 
             <div class="itemDescription">
-                <?php echo($description); ?>
+                <?php if($_SESSION['logged_in'] == True) echo($description); ?>
             </div>
 
         </div>
@@ -89,7 +125,7 @@ echo('<div class="text-center">You have to have an account to view this item <a 
         <div class="col-sm-4"> <!-- Right col with bidding info -->
 
             <p>
-                <?php if ($now > $end_time): ?>
+                <?php if($_SESSION['logged_in'] == True) if ($now > $end_time): ?>
                     This auction ended <?php echo(date_format($end_time, 'j M H:i')) ?>
                     <!-- TODO: Print the result of the auction here? -->
                 <?php else: ?>
@@ -111,7 +147,7 @@ echo('<div class="text-center">You have to have an account to view this item <a 
                             <input type="number" name="my_bid"  class="form-control" id="bid">
                             <button type="submit" name="PlaceBid" class="btn btn-secondary form-control">Place bid</button>
                         </div>
-                        <button type="submit" name="BuyNow" class="btn btn-primary form-control">Buy now for £<?echo $buyNowPrice?></button>
+                        <button type="submit" name="BuyNow" class="btn btn-primary form-control" >Buy now for £<?php echo (number_format($buyNowPrice,2))?></button>
                     </form>
                 <?php }
                 //otherwise only give the user the option to place a higher bid
