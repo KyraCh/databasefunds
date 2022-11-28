@@ -4,7 +4,7 @@
 // ONLY after the user's login credentials have been verified via a
 // database query.
 #comment
-include('login_result.com');
+include('login_result.php');
 //*added this if statement here to change the session to the user's session after login, this allows for each login to belong to one user
 if(isset($_POST['submit']))
 {
