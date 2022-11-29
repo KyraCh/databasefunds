@@ -125,7 +125,6 @@ elseif ($category == 'all') {
 
 
 
-
 /* TODO: Use above values to construct a query. Use this query to
    retrieve data from the database. (If there is no form data entered,
    decide on appropriate default value/default query to make. */

@@ -6,37 +6,22 @@
 
 //session_start();
 
-include("connection.php");
-
-
-
-if($_SERVER['REQUEST_METHOD'] == "POST")
+if(isset($_POST['submit']))
 {
-    //something was posted
-    $fist_name = $_POST['firstName'];
-    $last_name = $_POST['lastName'];
-    $email = $_POST['email'];
-    $password_1 = $_POST['password'];
-    $password_2 = $_POST['password2'];
-    $role = $_POST['accountType'];
-
-    if(!empty($email) && !empty($password_1) && !empty($fist_name) && !empty($last_name) && !is_numeric($email))
+    $sql ="INSERT INTO users(email,password,firstName,lastName,role) values('" . $_POST['email'] . "','" . $_POST['password'] ."','" . $_POST['firstName'] . "','" . $_POST['lastName'] . "','" . $_POST['accountType'] . "')";
+    $qsql = mysqli_query($con,$sql);
+    if(mysqli_affected_rows($con) == 1)
     {
-
-
-        $hash = password_hash($password_1, PASSWORD_DEFAULT);
-        $query = "insert into users (email,password,firstName,lastName,role) values ('$email','$password_1','$fist_name','$last_name','$role')";
-
-        mysqli_query($con, $query);
-
-
+        $_SESSION['logged_in'] = true;
         echo "<script>alert('Customer Registration done successfully..');</script>";
-        echo "<script>window.location='browse.php';</script>";
-
-        die;
-    }else
+        echo "<script>window.location='login.php';</script>";
+    }
+    else
     {
-        echo "Information not valid.";
+        echo "<script>alert('Failed to Register..');</script>";
+        echo mysqli_error($con);
     }
 }
 ?>
+
+

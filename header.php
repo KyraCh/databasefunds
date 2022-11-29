@@ -3,8 +3,11 @@
 // But eventually, with a database, these should be set automatically
 // ONLY after the user's login credentials have been verified via a
 // database query.
-session_start();
+//session_start();
+include('login_result.php');
 //*added this if statement here to change the session to the user's session after login, this allows for each login to belong to one user
+include('connection.php');
+
 if(isset($_POST['submit']))
 {
     $sql= "SELECT * FROM users WHERE email='$_POST[email]' AND password='$_POST[password]'";
@@ -13,16 +16,11 @@ if(isset($_POST['submit']))
     {
         $user_data= mysqli_fetch_array($result);
         $_SESSION["email"] = $user_data['email'];
-        $_SESSION['account_type'] = $user_data['role'];
+//        $_SESSION['account_type'] = $user_data['role'];
         $_SESSION['logged_in'] = true;
         "<script>window.location='index.php';</script>";
     }
-    else
-    {
-        $_SESSION['logged_in'] = false;
-        echo "<script>alert('Failed to login...');</script>";
-        "<script>window.location='index.php';</script>";
-    }
+    //removed the else statement to fix register error
 }
 
 //$_SESSION['logged_in'] = false;
