@@ -2,21 +2,21 @@
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
 
-    <div class="container">
+<div class="container">
 
-        <h2 class="my-3">Browse listings</h2>
+    <h2 class="my-3">Browse listings</h2>
+    <div id="searchSpecs">
+        <!-- When this form is submitted, this PHP page is what processes it.
+             Search/sort specs are passed to this page through parameters in the URL
+             (GET method of passing data to a page). -->
+        <form method="get" action="browse.php">
+            <div class="row">
+                <div class="col-md-5 pr-0">
+                    <div class="form-group">
+                        <label for="keyword" class="sr-only">Search keyword:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
 
-        <div id="searchSpecs">
-            <!-- When this form is submitted, this PHP page is what processes it.
-                 Search/sort specs are passed to this page through parameters in the URL
-                 (GET method of passing data to a page). -->
-            <form method="get" action="browse.php">
-                <div class="row">
-                    <div class="col-md-5 pr-0">
-                        <div class="form-group">
-                            <label for="keyword" class="sr-only">Search keyword:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
             <span class="input-group-text bg-transparent pr-0 text-muted">
               <i class="fa fa-search"></i>
             </span>
@@ -84,7 +84,19 @@ if (!isset($_GET['order_by'])){
 }
 else{
     $ordering = $_GET['order_by'];
+    if ($ordering == 'pricelow'){
+        $orderVar = "startingPrice ASC";
+    }
+    elseif ($ordering == 'pricehigh'){
+        $orderVar = "startingPrice DESC";
+    }
+    elseif ($ordering == 'else'){
+        $orderVar = "endDate ASC";
+    }
 }
+
+
+
 if (!isset($_GET['page'])) {
     $curr_page = 1;
 }
@@ -98,14 +110,14 @@ else {
    retrieve data from the database. (If there is no form data entered,
    decide on appropriate default value/default query to make. */
 if ($category != 'all'){
-    $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%'";
+    $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY @orderVar";
 
-    if ($ordering == 'pricelow'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice ASC";}
-    if ($ordering == 'pricehigh'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice DESC";}
-    if ($ordering == 'else'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";}
+//    if ($ordering == 'pricelow'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice ASC";}
+//    if ($ordering == 'pricehigh'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice DESC";}
+//    if ($ordering == 'else'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";}
     $result = mysqli_query($con,$sql);
 
 }
@@ -122,7 +134,6 @@ elseif ($category == 'all') {
     $result = mysqli_query($con,$sql);
 
 }
-
 
 
 

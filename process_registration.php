@@ -1,42 +1,34 @@
 <?php
-
 // TODO: Extract $_POST variables, check they're OK, and attempt to create
 // an account. Notify user of success/failure and redirect/give navigation
 // options.
 
-//session_start();
 
-include("connection.php");
-
-
-
-if($_SERVER['REQUEST_METHOD'] == "POST")
+if(isset($_POST['submit']))
 {
-    //something was posted
-    $fist_name = $_POST['firstName'];
-    $last_name = $_POST['lastName'];
+    // new check for an existing account
     $email = $_POST['email'];
-    $password_1 = $_POST['password'];
-    $password_2 = $_POST['password2'];
-    $role = $_POST['accountType'];
-
-    if(!empty($email) && !empty($password_1) && !empty($fist_name) && !empty($last_name) && !is_numeric($email))
+    $sql ="select * from users where email= '$email' limit 1";
+    $qsql = mysqli_query($con,$sql);
+    if(mysqli_affected_rows($con) == 0){
+    $sql ="INSERT INTO users(email,password,firstName,lastName,role) values('" . $_POST['email'] . "','" . $_POST['password'] ."','" . $_POST['firstName'] . "','" . $_POST['lastName'] . "','" . $_POST['accountType'] . "')";
+    $qsql = mysqli_query($con,$sql);
+    if(mysqli_affected_rows($con) == 1)
     {
-
-
-        $hash = password_hash($password_1, PASSWORD_DEFAULT);
-        $query = "insert into users (email,password,firstName,lastName,role) values ('$email','$password_1','$fist_name','$last_name','$role')";
-
-        mysqli_query($con, $query);
-
-
-        echo "<script>alert('Customer Registration done successfully..');</script>";
+        $_SESSION['logged_in'] = true;
+        echo "<script>alert('Registration successful.');</script>";
         echo "<script>window.location='login.php';</script>";
+    }
+    else
 
-        die;
-    }else
     {
-        echo "Information not valid.";
+        echo "<script>alert('Failed to Register.');</script>";
+        echo mysqli_error($con);
+    }}
+    else{
+        echo "<script>alert('An account with this email already exists.');</script>";
     }
 }
 ?>
+
+

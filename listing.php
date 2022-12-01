@@ -1,6 +1,52 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 
+<?php include("connection.php")?>
+<?php include("send.php")?>
+<?php
+  // Get info from the URL:
+  $item_id = $_GET['item_id'];
+  // TODO: Use item_id to make a query to the database.
+
+  // DELETEME: For now, using placeholder data.
+  $sql = "SELECT * FROM  auction1 WHERE auctionId = $item_id;";
+  $result = mysqli_query($con, $sql);
+  $check = mysqli_num_rows($result);
+
+  if ($check > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $title = $row["title"];
+          $description = $row["details"];
+          $num_bids = 1;
+          $current_price = $row["reservePrice"];
+          $end_time = new DateTime($row["endDate"]);
+
+      }
+  }
+
+  // TODO: Note: Auctions that have ended may pull a different set of data,
+  //       like whether the auction ended in a sale or was cancelled due
+  //       to lack of high-enough bids. Or maybe not.
+  
+  // Calculate time to auction end:
+  $now = new DateTime();
+  
+  if ($now < $end_time) {
+    $time_to_end = date_diff($now, $end_time);
+    $time_remaining = ' (in ' . display_time_remaining($time_to_end) . ')';
+  }
+  
+  // TODO: If the user has a session, use it to make a query to the database
+  //       to determine if the user is already watching this item.
+  //       For now, this is hardcoded.
+  $has_session = true;
+  $watching = false;
+
+
+?>
+
+
+
 <?php include("connection.php");
 if($_SESSION['logged_in'] == True){
     $email = $_SESSION['email'];
@@ -90,7 +136,25 @@ if ($width_orig && $height_orig > 1000) {
     echo('<div class="text-center">You have to have an account to view this item <a href="register.php">Register here</a></div>');
 }
 ?>
+
+    <form method="post">
+    <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
+      <button type="submit" name='watchlistButton'class="btn btn-outline-secondary btn-sm" value= "+ Add to watchlist" onclick="addToWatchlist()"></button>
+    </div>
+    <div id="watch_watching" <?php if (!$has_session || !$watching) echo('style="display: none"');?> >
+      <button type="submit" class="btn btn-success btn-sm" disabled>Watching</button>
+      <button type="submit" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
+    </div>
+    </form>
+<?php endif /* Print nothing otherwise */ ?>
+  </div>
+</div>
+
+<div class="row"> <!-- Row #2 with auction description + bidding info -->
+  <div class="col-sm-8"> <!-- Left col with item info -->
+
 <div class="container">
+
 
     <div class="row"> <!-- Row #1 with auction title + watch button -->
         <div class="col-sm-8"> <!-- Left col -->

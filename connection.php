@@ -3,7 +3,7 @@
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "auction";
+$dbname = "auction3";
 
 if (!$con = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname)) {
 
