@@ -6,6 +6,7 @@
 
 if(isset($_POST['submit']))
 {
+    // new check for an existing account
     $email = $_POST['email'];
     $sql ="select * from users where email= '$email' limit 1";
     $qsql = mysqli_query($con,$sql);

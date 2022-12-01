@@ -9,7 +9,7 @@ include("connection.php");
 
 
 
-if($_SERVER['REQUEST_METHOD'] == "POST")
+if(isset($_POST['loginSubmit']))
 {
     //something was posted
     $email = $_POST['email'];

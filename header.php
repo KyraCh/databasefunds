@@ -6,7 +6,7 @@
 //session_start();
 
 include('connection.php');
-
+include('login_result.php');
 
 if(isset($_POST['loginSubmit']))
 {
@@ -22,11 +22,12 @@ if(isset($_POST['loginSubmit']))
         $_SESSION['logged_in'] = true;
         "<script>window.location='index.php';</script>";
     }
-    //removed the else statement to fix registration error
+   else{
+       $_SESSION['logged_in'] = false;
+   }
 }
 
-//$_SESSION['logged_in'] = false;
-//$_SESSION['account_type'] = 'seller';
+
 ?>
 
 
