@@ -1,11 +1,11 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
-
+<?php include("sendWatchlist.php")?>
 <div class="container">
 
     <h2 class="my-3">Browse listings</h2>
-
+    <button type="submit" class="btn btn-primary" name = 'whatever'>Search</button>
     <div id="searchSpecs">
         <!-- When this form is submitted, this PHP page is what processes it.
              Search/sort specs are passed to this page through parameters in the URL
