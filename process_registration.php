@@ -20,6 +20,7 @@ if(isset($_POST['submit']))
         echo "<script>window.location='login.php';</script>";
     }
     else
+
     {
         echo "<script>alert('Failed to Register.');</script>";
         echo mysqli_error($con);

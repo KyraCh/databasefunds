@@ -2,13 +2,14 @@
 // FIXME: At the moment, I've allowed these values to be set manually.
 // But eventually, with a database, these should be set automatically
 // ONLY after the user's login credentials have been verified via a
-// database query.
+
 //session_start();
 
 include('connection.php');
 include('login_result.php');
 
 if(isset($_POST['loginSubmit']))
+
 {
 
     $sql= "SELECT * FROM users WHERE email='$_POST[email]' AND password='$_POST[password]'";
@@ -129,6 +130,7 @@ if(isset($_POST['loginSubmit']))
         </div>
     </div>
 </div> <!-- End modal -->
+
 
 
 <script>
