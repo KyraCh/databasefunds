@@ -36,8 +36,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                     $_SESSION['logged_in'] = true;
                     $_SESSION['email'] = $user_data['email']; //this seems to work but should we have used username?
                     $_SESSION['account_type'] = $user_data['role']; //seems to work
-                    echo('<div class="text-center">You are now logged in! You will be redirected shortly.</div>');
-
+                    echo "<script>alert('You are now logged in! You will be redirected shortly.');</script>";
                     // Redirect to index after 5 seconds
                     header("refresh:5;url=index.php");
 
@@ -45,11 +44,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                 }
             }
         }
-
-        echo "wrong username or password!";
+        echo "<script>alert('Failed to login. Wrong username or password.');</script>";
     }else
     {
-        echo "wrong username or password!";
+        echo "<script>alert('Failed to login. Wrong username or password.');</script>";
     }
 }
 

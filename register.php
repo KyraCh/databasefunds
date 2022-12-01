@@ -1,12 +1,10 @@
-<?php
-include("header.php");
-?>
-<?php include('process_registration.php'); ?>
+<?php include("header.php"); ?>
+<?php include("process_registration.php")?>
 
 
 <div class="container">
     <h2 class="my-3">Register new account</h2>
-        <form action="" method="post"  onsubmit="return validatecustomer()">
+        <form action="" method="post"  onsubmit="return errors()">
             <div class="form-group row">
                 <label for="accountType" class="col-sm-2 col-form-label text-right">Registering as a:</label>
                 <div class="col-sm-10">
@@ -61,7 +59,7 @@ include("header.php");
                 <button type="submit" name='submit' class="btn btn-primary form-control">Register</button>
             </div>
         </form>
-        <div class="text-center">Already have an account? <a href="" data-toggle="modal" data-target="#loginModal">Login</a></div>
+        <div class="text-center">Already have an account? <a href="login.php">Login</a>
 </div>
 
 <?php
@@ -70,56 +68,63 @@ include("footer.php");
 
 
 <script>
-    function validatecustomer()
+    function errors()
     {
-        var numericExp = /^[0-9]+$/;
-        var alphaExp = /^[a-zA-Z]+$/;
-        var alphaSpaceExp = /^[a-zA-Z\s]+$/;
-        var alphaNumericExp = /^[0-9a-zA-Z]+$/;
-        var emailExp = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
-        var regexpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/
+        var alphaSpaceErr = /^[a-zA-Z\s]+$/;
+        var emailErr = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
         $('.errormsg').html('');
         var errchk = "False";
 
-        // if(document.getElementById("firstName").value.length > 25)
-        // {
-        //     document.getElementById("firstNameHelp").innerHTML="";
-        //     errchk = "True";
-        // }
-        if(!document.getElementById("firstName").value.match(alphaSpaceExp))
+        if(document.getElementById("firstName").value.length > 40)
+        {
+            document.getElementById("firstNameHelp").innerHTML="First Name is too long.";
+            errchk = "True";
+        }
+        if(!document.getElementById("firstName").value.match(alphaSpaceErr))
         {
             document.getElementById("firstNameHelp").innerHTML = "Invalid First Name.";
             errchk = "True";
         }
-        if(document.getElementById("firstName").value == "")
+        if(document.getElementById("firstName").value === "")
         {
             document.getElementById("firstNameHelp").innerHTML="First Name cannot be empty.";
             errchk = "True";
         }
 
-        if(!document.getElementById("lastName").value.match(alphaSpaceExp))
+        if(document.getElementById("lastName").value.length > 40)
+        {
+            document.getElementById("firstNameHelp").innerHTML="Last Name is too long.";
+            errchk = "True";
+        }
+
+        if(!document.getElementById("lastName").value.match(alphaSpaceErr))
         {
             document.getElementById("lastNameHelp").innerHTML = "Invalid First Name.";
             errchk = "True";
         }
-        if(document.getElementById("lastName").value == "")
+        if(document.getElementById("lastName").value === "")
         {
             document.getElementById("lastNameHelp").innerHTML="First Name cannot be empty.";
             errchk = "True";
         }
 
+        if(document.getElementById("email_id").value.length > 320)
+        {
+            document.getElementById("firstNameHelp").innerHTML="Email is too long";
+            errchk = "True";
+        }
 
-        if(!document.getElementById("email_id").value.match(emailExp))
+
+        if(!document.getElementById("email_id").value.match(emailErr))
         {
             document.getElementById("emailHelp").innerHTML = "Invalid email.";
             errchk = "True";
         }
-        if(document.getElementById("email_id").value == "")
+        if(document.getElementById("email_id").value === "")
         {
             document.getElementById("emailHelp").innerHTML="Email cannot be empty.";
             errchk = "True";
         }
-
 
 
         if(document.getElementById("password_id").value.length < 8)
@@ -132,48 +137,22 @@ include("footer.php");
             document.getElementById("passwordHelp").innerHTML ="Password should be less than 16 characters.";
             errchk = "True";
         }
-        if(document.getElementById("password_id").value == "")
+        if(document.getElementById("password_id").value === "")
         {
             document.getElementById("passwordHelp").innerHTML ="Password cannot be empty.";
             errchk = "True";
         }
 
-        if(document.getElementById("passwordConfirmation").value != document.getElementById("password_id").value )
+        if(document.getElementById("passwordConfirmation").value !== document.getElementById("password_id").value )
         {
             document.getElementById("passwordConfirmationHelp").innerHTML ="Passwords do not match.";
             errchk = "True";
         }
-        if(document.getElementById("passwordConfirmation").value == "")
+        if(document.getElementById("passwordConfirmation").value === "")
         {
             document.getElementById("passwordConfirmationHelp").innerHTML ="Repeat Password cannot be empty.";
             i=1;
         }
-        if(errchk == "True")
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return errchk !== "True";
     }
-    /*
-    $("#mobile_no").keydown(function(e) {
-        var oldvalue=$(this).val();
-            var field=this;
-            setTimeout(function () {
-                if(field.value.indexOf('+91') !== 0) {
-                    $(field).val(oldvalue);
-                }
-            }, 1);
-    });
-    */
-    // function isNumber(evt) {
-    //     evt = (evt) ? evt : window.event;
-    //     var charCode = (evt.which) ? evt.which : evt.keyCode;
-    //     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
 </script>

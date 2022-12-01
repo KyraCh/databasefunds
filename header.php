@@ -4,23 +4,25 @@
 // ONLY after the user's login credentials have been verified via a
 // database query.
 //session_start();
-include('login_result.php');
-//*added this if statement here to change the session to the user's session after login, this allows for each login to belong to one user
+
 include('connection.php');
 
-if(isset($_POST['submit']))
+
+if(isset($_POST['loginSubmit']))
 {
+
     $sql= "SELECT * FROM users WHERE email='$_POST[email]' AND password='$_POST[password]'";
     $result = mysqli_query($con,$sql);
     if(mysqli_num_rows($result) == 1 )
     {
+
         $user_data= mysqli_fetch_array($result);
         $_SESSION["email"] = $user_data['email'];
-//        $_SESSION['account_type'] = $user_data['role'];
+        $_SESSION['account_type'] = $user_data['role'];
         $_SESSION['logged_in'] = true;
         "<script>window.location='index.php';</script>";
     }
-    //removed the else statement to fix register error
+    //removed the else statement to fix registration error
 }
 
 //$_SESSION['logged_in'] = false;
@@ -107,16 +109,18 @@ if(isset($_POST['submit']))
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form method="POST" action="login_result.php">
+                <form action="" method="post"  onsubmit="return errors()">
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="text" name= "email" class="form-control" id="email" placeholder="Email">
+                        <small  class="required"><span class="errormsg text-danger" id="emailhelp"></span></small>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" name = "password" class="form-control" id="password" placeholder="Password">
+                        <small  class="required"><span class="errormsg text-danger" id="passwordhelp"></span></small>
                     </div>
-                    <button type="submit" class="btn btn-primary form-control" name="submit">Sign in</button>
+                    <button href="login_result.php" type="submit" class="btn btn-primary form-control" name="loginSubmit" >Sign in</button>
                 </form>
                 <div class="text-center">or <a href="register.php">create an account</a></div>
             </div>
@@ -124,3 +128,40 @@ if(isset($_POST['submit']))
         </div>
     </div>
 </div> <!-- End modal -->
+
+
+<script>
+    function errors()
+    {
+
+        var emailErr = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+        $('.errormsg').html('');
+        var errchk = "False";
+
+        // why is my check here not working?
+        if(document.getElementById("email").value === "")
+        {
+            document.getElementById("emailhelp").innerHTML="Email is empty.";
+            errchk = "True";
+        }
+        if(!document.getElementById("email").value.match(emailErr))
+        {
+            document.getElementById("emailhelp").innerHTML = "Invalid email format.";
+            errchk = "True";
+        }
+        // why is my check here not working?
+        if(document.getElementById("password").value === "")
+        {
+            document.getElementById("passwordhelp").innerHTML="Password is empty.";
+            errchk = "True";
+        }
+        if(document.getElementById("password").value.length < 8)
+        {
+            document.getElementById("passwordhelp").innerHTML ="Password should be 8 characters or more.";
+            errchk = "True";
+        }
+
+
+        return errchk !== "True";
+    }
+</script>
