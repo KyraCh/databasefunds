@@ -1,11 +1,10 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
-<?php include("sendWatchlist.php")?>
+
 <div class="container">
 
     <h2 class="my-3">Browse listings</h2>
-    <button type="submit" class="btn btn-primary" name = 'whatever'>Search</button>
     <div id="searchSpecs">
         <!-- When this form is submitted, this PHP page is what processes it.
              Search/sort specs are passed to this page through parameters in the URL
@@ -84,7 +83,19 @@ if (!isset($_GET['order_by'])){
 }
 else{
     $ordering = $_GET['order_by'];
+    if ($ordering == 'pricelow'){
+        $orderVar = "startingPrice ASC";
+    }
+    elseif ($ordering == 'pricehigh'){
+        $orderVar = "startingPrice DESC";
+    }
+    elseif ($ordering == 'else'){
+        $orderVar = "endDate ASC";
+    }
 }
+
+
+
 if (!isset($_GET['page'])) {
     $curr_page = 1;
 }
@@ -98,14 +109,14 @@ else {
    retrieve data from the database. (If there is no form data entered,
    decide on appropriate default value/default query to make. */
 if ($category != 'all'){
-    $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%'";
+    $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY @orderVar";
 
-    if ($ordering == 'pricelow'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice ASC";}
-    if ($ordering == 'pricehigh'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice DESC";}
-    if ($ordering == 'else'){
-        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";}
+//    if ($ordering == 'pricelow'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice ASC";}
+//    if ($ordering == 'pricehigh'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY startingPrice DESC";}
+//    if ($ordering == 'else'){
+//        $sql = "SELECT * FROM auction1 WHERE category = '$category' INTERSECT SELECT * FROM auction1 WHERE title LIKE '%$keyword%' OR details LIKE '%$keyword%' ORDER BY endDate ASC";}
     $result = mysqli_query($con,$sql);
 
 }

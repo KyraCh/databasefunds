@@ -5,7 +5,7 @@
     <div class="container">
         <h2 class="my-3">Login to your account</h2>
         <!-- Create auction form -->
-        <form action="" method="post"  onsubmit="return errors() action='login_result.php">
+        <form action="" method="post"  onsubmit="return errors()">
             <div class="form-group row">
                 <label for="email" class="col-sm-2 col-form-label text-right">Email</label>
                 <div class="col-sm-10">

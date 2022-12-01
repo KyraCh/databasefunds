@@ -1,7 +1,7 @@
 <?php include_once("header.php")?>
 <?php require("utilities.php")?>
 <?php include("connection.php")?>
-
+<?php include("send.php")?>
 <?php
   // Get info from the URL:
   $item_id = $_GET['item_id'];
@@ -41,48 +41,6 @@
   $has_session = true;
   $watching = false;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
-
-if(isset($_POST['watchlistButton'])){
-    $mail = new PHPMailer(true);
-
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'thekomzonlineyard@gmail.com'; //gmail
-    $mail->Password = 'zcvopeklnniwblfn'; //gmail app password
-    $mail->SMTPSecure = 'ssl';
-    $mail->Port = 465;
-
-    $mail->setFrom('thekomzonlineyard@gmail.com'); //gmail
-
-    $mail->addAddress('kiriakicharalambous@gmail.com');
-
-    $mail->isHTML(true);
-
-    $mail->Subject ='hey';
-    $mail->Body = 'you';
-
-    $mail->send();
-
-    echo
-
-    "        <script>
-        alert('Sent Successfully');
-        document.location.href = 'index.php';
-        </script>
-        ";
-
-
-}
-
-
 
 ?>
 
@@ -99,13 +57,16 @@ if(isset($_POST['watchlistButton'])){
      just as easily use PHP as in other places in the code */
   if ($now < $end_time):
 ?>
+
+    <form method="post">
     <div id="watch_nowatch" <?php if ($has_session && $watching) echo('style="display: none"');?> >
-      <button type="button" name='watchlistButton'class="btn btn-outline-secondary btn-sm" onclick="addToWatchlist()">+ Add to watchlist</button>
+      <button type="submit" name='watchlistButton'class="btn btn-outline-secondary btn-sm" value= "+ Add to watchlist" onclick="addToWatchlist()"></button>
     </div>
     <div id="watch_watching" <?php if (!$has_session || !$watching) echo('style="display: none"');?> >
-      <button type="button" class="btn btn-success btn-sm" disabled>Watching</button>
-      <button type="button" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
+      <button type="submit" class="btn btn-success btn-sm" disabled>Watching</button>
+      <button type="submit" class="btn btn-danger btn-sm" onclick="removeFromWatchlist()">Remove watch</button>
     </div>
+    </form>
 <?php endif /* Print nothing otherwise */ ?>
   </div>
 </div>
